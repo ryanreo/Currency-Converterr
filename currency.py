@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
-API_KEY = '***REMOVED***'
-BASE_URL = "https://v6.exchangerate-api.com/v6/***REMOVED***/latest/USD"
+API_KEY = os.getenv('EXCHANGERATE_API_KEY')
+BASE_URL = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
 
 @app.route('/')
 def home():
@@ -18,7 +19,7 @@ def convert_currency():
     from_currency = data['from']
     to_currency = data['to']
     
-    response = requests.get(f"https://v6.exchangerate-api.com/v6/***REMOVED***/latest/{from_currency}")
+    response = requests.get(f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{from_currency}")
     rates = response.json()["conversion_rates"]
     
     #Convert currency
